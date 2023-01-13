@@ -1,10 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux/es/exports';
 import { RootState } from './reducers';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import axios from 'axios';
 
 type Props = {
   // value: number,
@@ -18,6 +19,18 @@ function App({ onIncrement, onDecrement }: Props) {
   const counter = useSelector((state: RootState) => state.counter) //store에 들어있는 state
   const dispatch = useDispatch();
   const [todoValue, setTodoValue] = useState('');
+
+  useEffect(() => {
+    dispatch(fetchPosts())
+  }, [dispatch])
+
+  const fetchPosts: any = () => {
+    return async function fetchPostsThunk(dispatch: any, getState: any) {
+      const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
+      dispatch({ type: "FETCH_POSTS", payload: response.data })
+    }
+  }
+
 
   const addTodo = (event: React.FormEvent<HTMLFormElement>) => {
     // form 이벤트에 타입 부여

@@ -8,13 +8,15 @@ import counter from './reducers';
 import rootReducer from './reducers';
 import { Provider } from 'react-redux';
 import loggerMiddleware from './middleware/log';
+import thunk from 'redux-thunk';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 //미들웨어 등록
-const middleware = applyMiddleware(loggerMiddleware) //미들웨어가 여러개면 쉼표로 구분
+const middleware = applyMiddleware(thunk, loggerMiddleware) //미들웨어가 여러개면 쉼표로 구분
 
 const store = createStore(rootReducer, middleware); // createContext와 같다
 // 리덕스 툴킷으로 configureStore라는 간단한 방식을 만들어놔서 이전에 만들어진 createStore가 권장되지 않음
